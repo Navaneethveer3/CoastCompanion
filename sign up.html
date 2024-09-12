@@ -317,7 +317,12 @@
           try {
               const userCredential = await signInWithEmailAndPassword(auth, email, password);
               const user = userCredential.user;
-
+              if (!user.emailVerified) {
+                  loginMessageElement.textContent = 'Please verify your email address before logging in.';
+                  alert("Verify your email to login");
+                  await auth.signOut();
+                  return;
+              }
               
               
 
@@ -349,7 +354,7 @@
       });
 
       auth.onAuthStateChanged((user) => {
-          if (user ) {
+          if (user && user.emailVerified) {
               window.location.href = 'h.html';
           } else if (user) {
               
