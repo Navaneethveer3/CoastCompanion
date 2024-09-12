@@ -4269,17 +4269,16 @@ function searchBeach() {
                     'Hollant Beach', 'Varca Beach'
                 ];
                 const list5 = [
-                    'Bheemunipatnam Beach', 'Rishikonda Beach', 'Yarada Beach'
+                    'Bheemunipatnam Beach', 'Rishikonda Beach', 'Yarada Beach',
+                    'Kothapatnam Beach', 'Lawson Beach', 'Ramapuram Beach',
+                    'Ramakrishna Beach', 'Suryalanka Beach'
                 ];
                 const list6 = [
                     'Appikonda Beach', 'Krishnapatnam Beach', 'Manginapudi Beach',
                     'Pakala Beach', 'Perupalem Beach', 'Vodarevu Beach'
                 ];
+                
                 const list7 = [
-                    'Kothapatnam Beach', 'Lawson Beach', 'Ramapuram Beach',
-                    'Ramakrishna Beach', 'Suryalanka Beach'
-                ];
-                const list8 = [
                     'Mypadu Beach', 'Uppada Beach'
                 ];
                 
@@ -4298,8 +4297,6 @@ function searchBeach() {
                 } else if(list6.includes(selectedBeach)){
                     locationKey = '2836870';
                 } else if(list7.includes(selectedBeach)){
-                    locationKey - '2842386';
-                } else if(list8.includes(selectedBeach)){
                     locationKey = '186812';
                 } else {
                     weatherDetails.innerHTML = `<p>Please select a valid beach.</p>`;
@@ -4430,7 +4427,11 @@ function handleButtonClick() {
         'Candolim-Beach', 'Cavelossim-Beach', 'Colomb-Beach', 'Colva-Beach',
         'Hollant-Beach', 'Majorda-Beach', 'Miramir-Beach', 'Mobor-Beach',
         'Morjim-Beach', 'Palolem-Beach', 'Patnem-Beach', 'Sinquerim-Beach',
-        'Vagator-Beach', 'Utorda-Beach', 'Varca-Beach', 'Turtle-Beach'
+        'Vagator-Beach', 'Utorda-Beach', 'Varca-Beach', 'Turtle-Beach',
+        'Appikonda-Beach', 'Bheemunipatnam-Beach', 'Kothapatnam-Beach', 'Krishnapatnam-Beach',
+        'Lawson-Beach', 'Manginapudi-Beach', 'Mypadu-Beach', 'Pakala-Beach',
+        'Perupalem-Beach', 'Ramakrishna-Beach', 'Ramapuram-Beach', 'Rishikonda-Beach',
+        'Suryalanka-Beach', 'Uppada-Beach', 'Vodarevu-Beach', 'Yarada-Beach',
     ];
 
     
@@ -4476,6 +4477,7 @@ async function toggleFavorite(beachId, button) {
             await set(userFavoritesRef, favorites);
 
             console.log(`${beachId} was added/removed from favorites.`);
+            alert(beachId +' was added/removed from favorites');
         } catch (error) {
             console.error('Error updating favorites: ', error.message);
         }
