@@ -2502,6 +2502,7 @@ It needs some maintenance as the beach area sand I filled with chappals it's see
                     <button id="showNearbyRestaurants">Nearby Restaurants</button>
                     <button id="showSupport">Support</button>
                     <button id="showSettings">Settings</button>
+                    <button id="showMyTrips">My Trips</button>
                 </div>
             </div>
         </div>
@@ -2527,7 +2528,7 @@ It needs some maintenance as the beach area sand I filled with chappals it's see
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, updatePassword } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
-        import { getDatabase, ref, get, set, update, remove } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js';
+        import { getDatabase, ref, get, set, update, remove, child, onValue } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js';
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
 
 
@@ -2786,6 +2787,8 @@ const analytics = getAnalytics(app);
 const database = getDatabase(app);
 const auth = getAuth(app);
 const user = auth.currentUser;
+const showMyTripsButton = document.getElementById('showMyTrips');
+const modalBody = document.getElementById('modal-body');
 
 const beachesInGoa = {
   "Baga-Beach": {
@@ -4360,6 +4363,7 @@ export function openModal() {
             <button id="showNearbyRestaurants">Nearby Restaurants</button>
             <button id="showSupport">Support</button>
             <button id="showSettings">Settings</button>
+            <button id="showMyTrips">My Trips</button>
         `;
         
         
@@ -4367,8 +4371,25 @@ export function openModal() {
         document.getElementById('showNearbyRestaurants').addEventListener('click', showNearbyRestaurants);
         document.getElementById('showSupport').addEventListener('click', showSupport);
         document.getElementById('showSettings').addEventListener('click', showSettings);
+        document.getElementById('showMyTrips')?.addEventListener('click', async () => {
+            const userId = getCurrentUserId();
 
-        modal.style.display = 'flex';
+            if (userId) {
+                const tripsRef = ref(database, 'trips/' + userId);
+                onValue(tripsRef, (snapshot) => {
+                    const data = snapshot.val();
+                    displayTrips(data);
+                }, {
+                    onlyOnce: true
+                });
+            } else {
+                modalBody.innerHTML = '<p>User not authenticated.</p>';
+            }
+        });
+
+        modal.style.display = 'flex'; 
+    } else {
+        console.error('Modal or modal body element not found');
     }
 }
 
@@ -4537,6 +4558,43 @@ window.addEventListener('click', function(event) {
     const modal = document.getElementById('modal');
     if (event.target === modal) {
         closeModal();
+    }
+});
+
+function getCurrentUserId() {
+    const user = auth.currentUser;
+    return user ? user.uid : null;
+}
+
+
+function displayTrips(trips) {
+    modalBody.innerHTML = '<h3>My Trips</h3>';
+    if (trips) {
+        Object.keys(trips).forEach(tripId => {
+            const trip = trips[tripId];
+            const tripElement = document.createElement('div');
+            tripElement.textContent = `Trip ID: ${tripId}, Destination: ${trip.destination}, Date: ${trip.date}`;
+            modalBody.appendChild(tripElement);
+        });
+    } else {
+        modalBody.innerHTML += '<p>You don\'t have any trips.</p>';
+    }
+}
+
+
+showMyTripsButton.addEventListener('click', async () => {
+    const userId = getCurrentUserId();
+
+    if (userId) {
+        const tripsRef = ref(database, 'trips/' + userId);
+        onValue(tripsRef, (snapshot) => {
+            const data = snapshot.val();
+            displayTrips(data);
+        }, {
+            onlyOnce: true
+        });
+    } else {
+        modalBody.innerHTML = '<p>User not authenticated.</p>';
     }
 });
 
