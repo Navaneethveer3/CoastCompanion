@@ -1,0 +1,162 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Out</title>
+    <style>
+        *,
+        *:before,
+        *:after {
+          box-sizing: border-box;
+        }
+
+        html {
+          overflow-y: scroll;
+        }
+
+        body {
+          background: #c1bdba;
+          font-family: 'Titillium Web', sans-serif;
+        }
+
+        a {
+          text-decoration: none;
+          color: #1ab188;
+          transition: .5s ease;
+        }
+
+        a:hover {
+          color: #179b7f;
+        }
+
+        .form {
+          background: rgba(19, 35, 47, .9);
+          padding: 40px;
+          max-width: 600px;
+          margin: 40px auto;
+          border-radius: 4px;
+          box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
+          text-align: center;
+        }
+
+        h1 {
+          color: #ffffff;
+          font-weight: 300;
+          margin: 0 0 40px;
+        }
+
+        button {
+          background: #1ab188;
+          border: none;
+          color: #ffffff;
+          padding: 15px 25px;
+          font-size: 18px;
+          cursor: pointer;
+          border-radius: 4px;
+          transition: background 0.3s ease;
+        }
+
+        button:hover {
+          background: #179b7f;
+        }
+    </style>
+</head>
+<body>
+    <div class="form">
+        <h1>Are you sure you want to log out?</h1>
+        <form id="logout-form">
+            <button type="submit">Log Out</button>
+        </form>
+        <div id="logout-message"></div>
+    </div>
+
+    
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js" type="module"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js" type="module"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDMeJ2ACha6QfR08s6tBr531ZZYzl7OjL8",
+            authDomain: "coastcompanion-30cc1.firebaseapp.com",
+            projectId: "coastcompanion-30cc1",
+            storageBucket: "coastcompanion-30cc1.appspot.com",
+            messagingSenderId: "288666758815",
+            appId: "1:288666758815:web:4e8f389f609d864c70fcaa",
+            measurementId: "G-ZZPHJGVCD1"
+        };
+
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        
+        const logoutForm = document.getElementById('logout-form');
+        const logoutMessageElement = document.getElementById('logout-message');
+
+        if (logoutForm && logoutMessageElement) {
+            logoutForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                try {
+                    await signOut(auth);
+                    alert('You have successfully logged out');
+                    history.replaceState(null, null, "https://coastcompanion.netlify.app");
+                    
+                    window.location.href = "https://coastcompanion.netlify.app";
+                } catch (error) {
+                    logoutMessageElement.textContent = `Error: ${error.message}`;
+                }
+            });
+        } else {
+            console.error('Logout form or message element not found.');
+        }
+        window.addEventListener('popstate', function(event) {
+    
+    window.location.href = "https://coastcompanion.netlify.app";
+});
+
+        document.addEventListener('DOMContentLoaded', () => {
+           
+            if (localStorage.getItem('userLoggedOut') === 'true') {
+                
+                localStorage.removeItem('userLoggedOut');
+                
+                document.getElementById('login-signup-btn').style.display = 'inline-block';
+                document.getElementById('logout-btn').style.display = 'none';
+            }
+
+            document.getElementById('state-select').addEventListener('change', updateBeachOptions);
+            document.getElementById('search-btn').addEventListener('click', redirectToSignup);
+            document.getElementById('login-signup-btn').addEventListener('click', () => {
+                window.location.href = 'sign up.html';
+            });
+
+            document.getElementById('logout-btn').addEventListener('click', async () => {
+                try {
+                    await auth.signOut();
+                    localStorage.setItem('userLoggedOut', 'true');
+                    window.location.href = 'out.html'; 
+                } catch (error) {
+                    console.error('Error signing out:', error);
+                }
+            });
+        });
+        
+    auth.onAuthStateChanged((user) => {
+        if (!user) {
+           
+            window.location.href = 'https://coastcompanion.netlify.app';
+        }
+    });
+
+    
+    </script>
+</body>
+</html>

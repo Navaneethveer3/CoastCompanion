@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up / Log In</title>
+    <style>
+        
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-y: scroll;
+        }
+
+        body {
+            background: #c1bdba;
+            font-family: 'Titillium Web', sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+            color: #1ab188;
+            transition: .5s ease;
+        }
+
+        a:hover {
+            color: #179b7f;
+        }
+
+        .form {
+            background: rgba(19, 35, 47, .9);
+            padding: 40px;
+            max-width: 600px;
+            margin: 40px auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
+        }
+
+        .tab-group {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 40px 0;
+        }
+
+        .tab-group:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .tab-group li a {
+            display: block;
+            text-decoration: none;
+            padding: 15px;
+            background: rgba(160, 179, 176, .25);
+            color: #a0b3b0;
+            font-size: 20px;
+            float: left;
+            width: 50%;
+            text-align: center;
+            cursor: pointer;
+            transition: .5s ease;
+        }
+
+        .tab-group li a:hover {
+            background: #179b7f;
+            color: #ffffff;
+        }
+
+        .tab-group .active a {
+            background: #1ab188;
+            color: #ffffff;
+        }
+
+        .tab-content > div {
+            display: none;
+        }
+
+        .tab-content > div.active {
+            display: block;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            font-weight: 300;
+            margin: 0 0 40px;
+        }
+
+        label {
+            position: absolute;
+            pointer-events: none;
+            font-size: 18px;
+            color: rgba(255, 255, 255, .5);
+            transition: all 0.25s ease;
+            top: 12px;
+            left: 15px;
+            line-height: 22px;
+        }
+
+        input:focus + label,
+        input:not(:placeholder-shown) + label {
+            top: -20px;
+            left: 10px;
+            font-size: 14px;
+            color: #1ab188;
+        }
+
+        input,
+        textarea {
+            font-size: 18px;
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: none;
+            border: 1px solid #a0b3b0;
+            color: #ffffff;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: 0;
+            border-color: #1ab188;
+        }
+
+        textarea {
+            border: 2px solid #a0b3b0;
+            resize: vertical;
+        }
+
+        .field-wrap {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .top-row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <div class="form">
+        <ul class="tab-group">
+            <li class="tab active"><a href="#signup">Sign Up</a></li>
+            <li class="tab"><a href="#login">Log In</a></li>
+        </ul>
+        
+        <div class="tab-content">
+            <div id="signup">   
+                <h1>Sign Up for Free</h1>
+                <form id="signup-form">
+                    <div class="top-row">
+                        <div class="field-wrap">
+                            <input type="text" id="first-name" required autocomplete="off" placeholder=" " />
+                            <label for="first-name">First Name<span class="req">*</span></label>
+                        </div>
+                        <div class="field-wrap">
+                            <input type="text" id="last-name" required autocomplete="off" placeholder=" " />
+                            <label for="last-name">Last Name<span class="req">*</span></label>
+                        </div>
+                    </div>
+                    <div class="field-wrap">
+                        <input type="email" id="email" required autocomplete="off" placeholder=" " />
+                        <label for="email">Email Address<span class="req">*</span></label>
+                        <small id="email-error" style="color: red;"></small>
+                    </div>
+                    <div class="field-wrap">
+                        <input type="password" id="password" required autocomplete="off" placeholder=" " />
+                        <label for="password">Set A Password<span class="req">*</span></label>
+                        <small id="password-error" style="color: red;"></small>
+                    </div>
+                    <button type="submit" class="button button-block">Get Started</button>
+                </form>
+                
+                <div id="signup-message"></div>
+            </div>
+            
+            <div id="login">   
+                <h1>Welcome Back!</h1>
+                <form id="login-form">
+                    <div class="field-wrap">
+                        <input type="email" id="login-email" required autocomplete="off" placeholder=" " />
+                        <label for="login-email">Email Address<span class="req">*</span></label>
+                        <small id="login-email-error" style="color: red;"></small>
+                    </div>
+                    <div class="field-wrap">
+                        <input type="password" id="login-password" required autocomplete="off" placeholder=" " />
+                        <label for="login-password">Password<span class="req">*</span></label>
+                        <small id="login-password-error" style="color: red;"></small>
+                    </div>
+                    <p class="forgot"><a href="reset.html">Forgot Password?</a></p>
+                    <button type="submit" class="button button-block">Log In</button>
+                </form>
+                
+                <div id="login-message"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js" type="module"></script>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+      import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+  
+      const firebaseConfig = {
+          apiKey: "AIzaSyDMeJ2ACha6QfR08s6tBr531ZZYzl7OjL8",
+          authDomain: "coastcompanion-30cc1.firebaseapp.com",
+          projectId: "coastcompanion-30cc1",
+          storageBucket: "coastcompanion-30cc1.appspot.com",
+          messagingSenderId: "288666758815",
+          appId: "1:288666758815:web:4e8f389f609d864c70fcaa",
+          measurementId: "G-ZZPHJGVCD1"
+      };
+  
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const firestore = getFirestore(app);
+  
+      const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+      function validatePassword(password) {
+          return passwordRegex.test(password);
+      }
+  
+      const validEmailDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'icloud.com', 'protonmail.com', 'zoho.com', 'mail.com', 'gmx.com', 'tutanota.com', 'yandex.com', 'fastmail.com', 'hushmail.com', 'riseup.net', 'mailfence.com'];
+      function validateEmail(email) {
+          const emailParts = email.split('@');
+          if (emailParts.length !== 2) return false;
+
+          const domain = emailParts[1].toLowerCase();
+          const localPart = emailParts[0];
+
+          if (!validEmailDomains.includes(domain)) return false;
+          if (/([a-zA-Z])\1\1/.test(localPart)) return false;
+
+          return true;
+      }
+  
+      const signupForm = document.getElementById('signup-form');
+      const signupMessageElement = document.getElementById('signup-message');
+      const passwordErrorElement = document.getElementById('password-error');
+      const emailErrorElement = document.getElementById('email-error');
+  
+      signupForm?.addEventListener('submit', async (event) => {
+          event.preventDefault();
+
+          const email = signupForm.querySelector('#email').value;
+          const password = signupForm.querySelector('#password').value;
+
+          if (!validateEmail(email)) {
+              emailErrorElement.textContent = 'Invalid email address or email name contains three continuous similar characters.';
+              return;
+          } else {
+              emailErrorElement.textContent = '';
+          }
+
+          if (!validatePassword(password)) {
+              passwordErrorElement.textContent = 'Password must be at least 8 characters long, include a capital letter, a number, and a special character.';
+              return;
+          } else {
+              passwordErrorElement.textContent = '';
+          }
+
+          try {
+              const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+              const user = userCredential.user;
+
+              
+              await sendEmailVerification(user);
+
+              signupMessageElement.textContent = 'Registration successful! Please verify your email address. An email verification link has been sent.';
+              alert('A verification link has been sent to your email. Please check your inbox to verify your email address.');
+
+          } catch (error) {
+              signupMessageElement.textContent = `Error: ${error.message}`;
+          }
+      });
+  
+      const loginForm = document.getElementById('login-form');
+      const loginMessageElement = document.getElementById('login-message');
+      const loginPasswordErrorElement = document.getElementById('login-password-error');
+      const loginEmailErrorElement = document.getElementById('login-email-error');
+  
+      loginForm?.addEventListener('submit', async (event) => {
+          event.preventDefault();
+
+          const email = loginForm.querySelector('#login-email').value;
+          const password = loginForm.querySelector('#login-password').value;
+
+          if (!validateEmail(email)) {
+              loginEmailErrorElement.textContent = 'Invalid email address or email name contains three continuous similar characters.';
+              return;
+          } else {
+              loginEmailErrorElement.textContent = '';
+          }
+
+          if (!validatePassword(password)) {
+              loginPasswordErrorElement.textContent = 'Password must be at least 8 characters long, include a capital letter, a number, and a special character.';
+              return;
+          } else {
+              loginPasswordErrorElement.textContent = '';
+          }
+
+          try {
+              const userCredential = await signInWithEmailAndPassword(auth, email, password);
+              const user = userCredential.user;
+
+              
+              
+
+              alert('Redirecting...');
+              loginMessageElement.textContent = `Logged in successfully! Welcome back, ${email}.`;
+              
+              window.location.href = "h.html";
+          } catch (error) {
+              loginMessageElement.textContent = `Error: ${error.message}`;
+          }
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+          const tabs = document.querySelectorAll('.tab-group .tab');
+          const tabContents = document.querySelectorAll('.tab-content > div');
+
+          tabs.forEach(tab => {
+              tab.addEventListener('click', (e) => {
+                  e.preventDefault();
+
+                  tabs.forEach(t => t.classList.remove('active'));
+                  tabContents.forEach(content => content.classList.remove('active'));
+
+                  tab.classList.add('active');
+                  const targetId = tab.querySelector('a').getAttribute('href').substring(1);
+                  document.getElementById(targetId).classList.add('active');
+              });
+          });
+      });
+
+      auth.onAuthStateChanged((user) => {
+          if (user ) {
+              window.location.href = 'h.html';
+          } else if (user) {
+              
+              auth.signOut();
+          }
+      });
+    </script>
+</body>
+</html>

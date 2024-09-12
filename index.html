@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beach Details App</title>
+    <style>
+   
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e0f7fa; 
+}
+
+
+header {
+    background-color: #00796b; 
+    color: #ffffff; 
+    padding: 15px 20px; 
+    text-align: center;
+    position: relative;
+}
+
+
+header .auth-buttons {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+}
+
+header .auth-buttons button {
+    background-color: #004d40; 
+    color: #ffffff; 
+    border: none;
+    padding: 10px 20px; 
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 5px; 
+    font-size: 14px;
+    transition: background-color 0.3s ease; 
+}
+
+header .auth-buttons button:hover {
+    background-color: #00332d;
+}
+
+
+.container {
+    max-width: 1200px; 
+    width: 90%; 
+    margin: 20px auto; 
+    padding: 20px;
+    background-color: #ffffff; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+
+h1 {
+    margin: 0; 
+    font-size: 24px; 
+    color: #00796b; 
+}
+
+
+.options-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px; 
+}
+
+.options-bar label, .options-bar select {
+    margin-right: 10px; 
+}
+
+
+.search-bar {
+    margin-bottom: 20px; 
+    text-align: center; 
+}
+
+.search-bar button {
+    background-color: #004d40; 
+    color: #ffffff; 
+    border: none;
+    padding: 12px 24px;
+    cursor: pointer;
+    border-radius: 5px; 
+    font-size: 16px; 
+    transition: background-color 0.3s ease; 
+}
+
+.search-bar button:hover {
+    background-color: #00332d; 
+}
+
+
+#weather-details {
+    text-align: center; 
+    font-size: 18px;
+}
+</style>
+</head>
+<body>
+    <header>
+        <h1>The Coast Companion</h1>
+        <div class="auth-buttons">
+            <button id="login-signup-btn">Login/Signup</button>
+        </div>
+    </header>
+    
+    <div class="container">    
+        <div class="options-bar">
+            <label for="state-select">Select State:</label>
+            <select id="state-select">
+                <option value="">--Select a State--</option>
+                <option value="Goa">Goa</option>
+                
+            </select>
+
+            <label for="beach-select" id="beach-label" style="display: none;">Select Beach:</label>
+            <select id="beach-select" style="display: none;">
+                
+            </select>
+        </div>
+
+        <div class="search-bar">
+            <button id="search-btn">Search</button>
+        </div>
+
+        <div id="weather-details"></div>
+    </div>
+
+    <script type="module">
+        
+        const beachesByState = {
+            Goa: [
+                "Arossim Beach",
+                "Agonda Beach",
+                "Aguada Beach",
+                "Anjuna Beach",
+                "Arambol Beach",
+                "Ashvem Beach",
+                "Bambolim Beach",
+                "Baga Beach",
+                "Benaulim Beach",
+                "Betalbatim Beach",
+                "Betul Beach",
+                "Bogamlo Beach",
+                "Calangute Beach",
+                "Candolim Beach",
+                "Cavelossim Beach",
+                "Colomb Beach",
+                "Colva Beach",
+                "Hollant Beach",
+                "Majorda Beach",
+                "Miramir Beach",
+                "Mobor Beach",
+                "Morjim Beach",
+                "Palolem Beach",
+                "Patnem Beach",
+                "Sinquerim Beach",
+                "Vagator Beach",
+                "Utorda Beach",
+                "Varca Beach",
+                "Turtle Beach"
+            ]
+        };
+
+       
+        function updateBeachOptions() {
+            const stateSelect = document.getElementById('state-select');
+            const beachSelect = document.getElementById('beach-select');
+            const beachLabel = document.getElementById('beach-label');
+            const selectedState = stateSelect.value;
+
+            if (beachSelect) {
+                beachSelect.innerHTML = '<option value="">--Select a Beach--</option>';
+            }
+
+            if (selectedState) {
+                const beaches = beachesByState[selectedState] || [];
+                beaches.forEach(beach => {
+                    if (beachSelect) {
+                        const option = document.createElement('option');
+                        option.value = beach; 
+                        option.textContent = beach; 
+                        beachSelect.appendChild(option);
+                    }
+                });
+                if (beachLabel) {
+                    beachLabel.style.display = 'block';
+                }
+                if (beachSelect) {
+                    beachSelect.style.display = 'block';
+                }
+            } else {
+                if (beachLabel) {
+                    beachLabel.style.display = 'none';
+                }
+                if (beachSelect) {
+                    beachSelect.style.display = 'none';
+                }
+            }
+        }
+
+        
+        function redirectToSignup() {
+            window.location.href = 'sign up.html';
+        }
+
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('state-select').addEventListener('change', updateBeachOptions);
+            document.getElementById('search-btn').addEventListener('click', redirectToSignup);
+            document.getElementById('login-signup-btn').addEventListener('click', () => {
+                window.location.href = 'sign up.html';
+            });
+        });
+        auth.onAuthStateChanged((user) => {
+        if (user) {
+            
+            window.location.href = 'https://coatcompanion.netlify.app/h.html';
+        }
+        
+    });
+    </script>
+</body>
+</html>
