@@ -91,6 +91,14 @@
                     alert(`Error: ${errorMessage}`);
                 });
         });
+
+        auth.onAuthStateChanged((user) => {
+        if (user) {
+           
+            window.location.href = 'https://coastcompanion.netlify.app/h.html';
+        }
+    });
+        
     </script>
 </body>
 </html>
